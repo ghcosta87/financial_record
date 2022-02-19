@@ -8,8 +8,6 @@ FileHandler::FileHandler(QObject *parent)
 
 void FileHandler::logRecorder(QString dataRecord, bool active)
 {
-    qDebug() << "QString dataRecord: "<<dataRecord;
-
     if(active){
 //        QString recordMoment;
         time_t     now = time(0);

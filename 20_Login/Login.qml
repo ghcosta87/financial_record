@@ -1,290 +1,212 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+import QtQuick 2.15
+import QtQuick.Window 2.2
 import QtQuick.LocalStorage 2.0
+import QtQuick.Controls 2.1
+import Qt.labs.calendar 1.0
+import QtGraphicalEffects 1.0
+import QtCharts 2.3
+import QtQuick.Controls 2.15
 
-import "qrc:/ConfiguracoesFormScripts.js" as Calljava
+import '../03_MyComponents'
 
-Item {
-    anchors.fill:parent
+Rectangle {
+    // Funcions used on Login.qml
+    readonly property int _LOCAL_createUserTable:0 // ??
+    readonly property int _LOCAL_recordCurrentUser:1
+    readonly property int _LOCAL_checkCurrentUser: 2
+    readonly property int _LOCAL_userData:3
 
-    property StackView settingsStack
+    function localFunctions(choice){
+        switch(choice){
+        case ___createUserTable:
+            return USERHANDLER.createUserTable()
+        case ___checkCurrentUser:
+            return USERHANDLER.checkCurrentUser()
+        case ___recordCurrentUser:
+            //            __USER_HANDLER.recordCurrentUser(userInfo)
+            return USERHANDLER.recordCurrentUser(userInfo)
+        case ___userData:
+            return runC.userData(0," ")
+        }
+    }
 
-    Component.onCompleted: currentPage='B'
-    Component.onDestruction:currentPage='A'
+    id: root
+    anchors.fill: parent
+    color: 'transparent'
 
-    Rectangle{
-        id:config_contas_fixas
-        anchors.fill:parent
+    property bool click: false
+
+    Component.onCompleted: {
+        hideDrawer=true
+        loginTimer.start()
+        myLog("\nQML LoginOnCompleted(){ Login component completed }")
+    }
+
+    Timer {
+        id: loginTimer
+        interval: 2500
+        repeat: false
+        onTriggered: {
+            myLog('\nQML loginTimerOnTriggered()')
+            loginTimer.stop()
+            if(__USER_HANDLER.checkCurrentUser()){
+                runC.userData(true,userInfo)
+                appMonthObj.changed=__JAVASCRIPT.monthChanged()
+                showSnackBar(__STRING._welcomeText[__LANGUAGE._US])
+                stackView.push(mainPage)
+            }else{
+                busyIndicator.running=false
+            }
+        }
+        //            if(USERHANDLER.checkCurrentUser()){
+        //            if(localFunctions(___checkCurrentUser)){
+    }
+
+    Rectangle {
+        id: loginContainer
         color: 'transparent'
-        TextField{
-            id: field_nome_conta
-            transformOrigin: Item.Center
-            text:qsTr("Nome da conta")
-            anchors{
-                top: parent.top
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                bottomMargin: parent.height*0.92
-                leftMargin: parent.width*0.02
-                rightMargin: (parent.width*0.5)+2.5
+        anchors {
+            fill: parent
+            topMargin: parent.height * 0.3
+            bottomMargin: parent.height * 0.6
+            leftMargin: parent.width * 0.1
+            rightMargin: parent.width * 0.1
+        }
+        MyTextInput {
+            id: userLogin
+            textHint: "Digite seu email"
+            anchors.fill: parent
+            iconPath: MyIcons.mailIcon
+            inputMaskOption: emailFormat
+            timerActive: false
+            maxLengh: 50
+        }
+    }
+
+    Rectangle {
+        id: passwordContainer
+        color: 'transparent'
+        height: loginContainer.height
+        anchors {
+            top: loginContainer.bottom
+            left: parent.left
+            right: parent.right
+            topMargin: parent.height * 0.05
+            leftMargin: parent.width * 0.1
+            rightMargin: parent.width * 0.1
+        }
+        MyTextInput {
+            id: userPassword
+            textHint: "Digite sua senha"
+            anchors.fill: parent
+            iconPath: MyIcons.passcodeIcon
+            echoModeSelection: TextInput.Password
+            inputMaskOption: numbersOnly
+            timerActive: false
+            maxLengh: 6
+        }
+    }
+
+    BusyIndicator {
+        id: busyIndicator
+        palette.dark: MyColors.NIGHT_THEME_00
+        anchors {
+            top: passwordContainer.bottom
+            left: parent.left
+            right: parent.right
+            topMargin: parent.height * 0.05
+            leftMargin: parent.width * 0.1
+            rightMargin: parent.width * 0.1
+        }
+    }
+
+    Rectangle {
+        id: signInContainer
+        visible: !busyIndicator.running
+        color: 'transparent'
+        height: loginContainer.height * 0.5
+
+        anchors {
+            top: passwordContainer.bottom
+            topMargin: parent.height * 0.02
+            left: parent.left
+            right: parent.right
+        }
+        Text {
+            id: signInField
+            text: "Cadastre-se aqui" //animar a dica do texto diminuindo e subindo
+            anchors.fill: parent
+            font.pixelSize: 15
+            color: click ? MyColors.NIGHT_THEME_20 : MyColors.NIGHT_THEME_00
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        MouseArea {
+            id: signInFieldClick
+            anchors.fill: parent
+            onPressed: click=!click
+            onClicked:   {
+                stackView.push(signIn)
             }
+        }
+    }
+
+    Rectangle {
+        id: buttonContainer
+        color: 'transparent'
+        anchors {
+            top: busyIndicator.bottom
+            left: parent.left
+            right: parent.right
+            topMargin: parent.height * 0.07
+        }
+        MyButton {
+            rootWidth: passwordContainer.width
+            rootHeight: passwordContainer.height
+            title: "enter"
+            alignment: parent.horizontalCenter
+            theme: MyColors.NIGHT_THEME_00
             onPressed: {
-                field_nome_conta.clear()
-            }
-        }
-        ComboBox {
-            id: combobox_categoria_conta_config
-            anchors{
-                top: parent.top
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                bottomMargin: parent.height*0.92
-                leftMargin: (parent.width*0.5)+2.5
-                rightMargin: parent.width*0.02
-            }
-            model:["Alimentação","Carro","Casa","Compras","Doações","Essencial","Estudo","Financiamento","Investimento","Lazer","Obras","Saúde"]
-        }
-        TextField {
-            id: field_valor
-            text:qsTr("Valor da conta")
-            height: field_nome_conta.height
-            anchors{
-                top: field_nome_conta.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: (parent.width*0.5)+2.5
-            }
-            onPressed: {
-                field_valor.clear()
-            }
-        }
-        ComboBox {
-            id: config_combobox_acompanhamento
-            height: field_nome_conta.height
-            anchors{
-                top: field_nome_conta.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: (parent.width*0.5)+2.5
-                rightMargin: parent.width*0.02
-            }
-        }
-        ComboBox {
-            id: config_contas_combobox_debito
-            height: field_nome_conta.height
-            anchors{
-                top: field_valor.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: (parent.width*0.5)+2.5
-            }
-        }
-        ComboBox {
-            id: field_vencimento
-            height: field_nome_conta.height
-            anchors{
-                top: config_combobox_acompanhamento.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: (parent.width*0.5)+2.5
-                rightMargin: parent.width*0.02
-            }
-            model:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
-        }
-        Rectangle{
-            id:checkbox_rec
-            height: field_nome_conta.height
-            color: "#00000000"
-            anchors{
-                top: field_vencimento.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            CheckBox {
-                id: checkbox_auto
-                text: qsTr("Auto")
-                checkable: true
-                tristate: false
-                anchors{
-                    top: parent.top
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
-                    topMargin: parent.height*0.02
-                    bottomMargin: parent.height*0.02
-                    leftMargin: parent.width*0.02
-                    rightMargin: (parent.width*0.5)+2.5
-                }
-            }
-            CheckBox {
-                id: checkBox_irpf
-                text: qsTr("IRPF")
-                anchors{
-                    top: parent.top
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
-                    topMargin: parent.height*0.02
-                    bottomMargin: parent.height*0.02
-                    leftMargin: (parent.width*0.5)+2.5
-                    rightMargin: parent.width*0.02
-                }
-            }
-        }
-        Button {
-            id: config_contas_button_cadastrar
-            height: field_nome_conta.height * 1.2
-            text: qsTr("CADASTRAR")
-            anchors{
-                top: checkbox_rec.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onClicked: {
-                config_contas_button_cadastrar.text= "Conta " + field_nome_conta.text + ' adicionada'
-//                timer_botao.start()
-//                Calljava.f02_cadastrar_contafixa()
-
-                billObj.name=field_nome_conta.text
-                billObj.expire=field_vencimento.currentText
-                billObj.bank=config_contas_combobox_debito.currentText
-                if(checkbox_auto.checkState===2)billObj.auto=true
-                else billObj.auto=false
-                billObj.value=field_valor.text
-                billObj.status=_LIB_CONST._billsOpenStatus
-                billObj.category=combobox_categoria_conta_config.currentText
-                if(config_combobox_acompanhamento.currentIndex===0)billObj.link=emptyField
-                else billObj.link=config_combobox_acompanhamento.currentIndex
-                if(checkBox_irpf.checkState===2)billObj.tax=true
-                else billObj.tax=false
-                billObj.nextValue=emptyField
-
-                __BILLS_HANDLER.recordNewBill(billObj.exportValue)
-
-                //                        label_status.text = ""
-                //                        JSDatabase.i019_configuracoes_cadastrar_contafixa_button()
-                //                        label_status.text="Conta " + field_nome_conta.text + ' adicionada'
-            }
-        }
-        Rectangle{
-            id:separador1
-            color:"black"
-            height: field_nome_conta.height*0.1
-            anchors{
-                top: config_contas_button_cadastrar.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-        }
-        ComboBox {
-            id: combobox_alterar_contafixa
-            height: field_nome_conta.height
-            anchors{
-                top: separador1.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onCurrentIndexChanged: {
-                Calljava.f03_selecionar_contafixa()
-            }
-        }
-        TextField {
-            id: field_novovalor
-            text: qsTr("NOVO VALOR")
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            height: field_nome_conta.height
-            anchors{
-                top: combobox_alterar_contafixa.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onPressed: {
-                field_novovalor.clear()
-            }
-        }
-        TextField {
-            id: field_novovencimento
-            text: qsTr("NOVA DATA DE VENCIMENTO")
-            inputMethodHints: Qt.ImhFormattedNumbersOnly
-            height: field_nome_conta.height
-            anchors{
-                top: field_novovalor.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onPressed: {
-                field_novovencimento.clear()
-            }
-        }
-        Button {
-            id: button_alterar
-            text: qsTr("ALTERAR")
-            height: field_nome_conta.height * 1.2
-            anchors{
-                top: field_novovencimento.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onClicked: {
-                button_alterar.text=combobox_alterar_contafixa.currentText
-                        + " alterado para R$ " + field_novovalor.text
-                        + " e vencimento dia " + field_novovencimento.text
-                timer_botao.start()
-                Calljava.f05_alterar_valor_contafixa()
-            }
-        }
-        Button {
-            id: button_remover
-            text: qsTr("REMOVER")
-            height: field_nome_conta.height * 1.2
-            anchors{
-                top: button_alterar.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: parent.height*0.02
-                leftMargin: parent.width*0.02
-                rightMargin: parent.width*0.02
-            }
-            onClicked: {
-                button_remover.text="Conta "+ combobox_alterar_contafixa.currentText
-                        + " removida"
-                timer_botao.start()
-                Calljava.f06_remover_contafixa()
-
 
             }
+            onReleased: {
+                //stackView.push(main_menu)
+                //runC.getAuthToken()
+                runC.signIn(runC.getAuthToken(),userLogin.myText,userPassword.myText)
+                busyIndicator.running=true
+                signCycle.start()
+            }
         }
+    }
 
-}
+    Timer {
+        id: signCycle
+        interval: 500
+        repeat: true
+        onTriggered: {
+            if (runC.authComplete(false)===1) {
+                //                                userInfo=runC.userData()
+                userInfo=localFunctions(___userData)
+                //                                USERHANDLER.createUserTable()
+                localFunctions(___createUserTable)
+                //                                USERHANDLER.recordCurrentUser(userInfo)
+                localFunctions(___recordCurrentUser)
+                runC.authComplete(true)
+                myLog('user logged')
+                signCycle.stop()
+                busyIndicator.running = false
+                showSnackBar('Bem Vindo!')
+                stackView.push(mainPage)
+            }
+            if (runC.authComplete(false)===2) {
+                busyIndicator.running = false
+                showSnackBar('Connection error ...')
+                runC.authComplete(true)
+                myLog('erro user not logged')
+                //criar um popup para receber código de error
+                //e tambem salvar os dados no log via c++
+            }
+        }
+    }
+
 }

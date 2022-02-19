@@ -28,8 +28,8 @@ Item {
     property string setAppDate
 
     //  icons and images
-    property string setUserIcon: 'qrc:/Images/systemIcons/user_black.svg'
-    property string setSecondaryIcon: 'qrc:/Images/systemIcons/net_black.svg'
+    property string setUserIcon: 'file:///home/gabriel/Projetos/Design/Icons/alert-circle.svg'
+    property string setSecondaryIcon: 'file:///home/gabriel/Projetos/Design/Icons/alert-circle.svg'
 
     id: root
 

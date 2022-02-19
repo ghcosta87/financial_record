@@ -10,12 +10,12 @@ Item {
         id: stackView
         anchors.fill: parent
         clip: false
-        initialItem: testQML
+        initialItem: loginQML
     }
 
-//    Component{id:loginQML;Login{}}
+    Component{id:loginQML;Login{}}
 
-//    Component{id:signInQML;SignIn{}}
+    Component{id:signInQML;SignIn{}}
 
     Component{id:testQML;Tests{}}
 }

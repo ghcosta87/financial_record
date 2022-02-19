@@ -9,9 +9,23 @@ import QtQml.Models 2.2
 
 import '.'
 import './03_MyComponents'
+import './10_CodeLibrary'
+import './10_CodeLibrary/Styles'
 
 Window {
+    // ############ application constants ############
     readonly property string versionNumber: '20.0'
+
+    // ############# application pragmas #############
+    readonly property var _LIBCOLOR: MyColors
+
+    //  application variables
+    property int theme: _LIBCOLOR._dark
+
+    //  user control variables
+    property bool userLogged: false
+
+
 
     id: mainWindow
     width: 360
@@ -20,16 +34,32 @@ Window {
     //    visibility: SCRIPTS.visibilityType()
     title: qsTr("Financial record "+ versionNumber)
 
-    MainStacks{
+    Rectangle{
         anchors.fill:parent
+        color: _LIBCOLOR._background[theme]
     }
 
-    /*
-header
+    MyHeader{
+        id:header
+        clip:true
+        width:parent.width
+        height: (userLogged) ? parent.height*0.14 : 0
+        anchors.top:parent.top
+    }
 
-body
+    MainStacks{
+        anchors{
+            fill:parent
+            topMargin: (userLogged) ? header.height : 0
+            bottomMargin: (userLogged) ? footer.height : 0
+        }
+    }
 
-footer
-*/
-
+    MyFooter{
+        id:footer
+        clip:true
+        width:parent.width
+        height: (userLogged) ? parent.height*0.14 : 0
+        anchors.bottom:parent.bottom
+    }
 }

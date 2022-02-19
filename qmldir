@@ -1,0 +1,3 @@
+module QmlStyles
+singleton AppStyle 1.0 10_CodeLibrary/Styles/MyColors.qml
+

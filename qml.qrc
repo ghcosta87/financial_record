@@ -31,5 +31,6 @@
         <file>02_ExtrasLibrary/Fonts/Roboto-ThinItalic.ttf</file>
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.otf</file>
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.ttf</file>
+        <file>10_CodeLibrary/Styles/MyFont.qml</file>
     </qresource>
 </RCC>

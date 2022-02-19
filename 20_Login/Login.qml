@@ -11,17 +11,20 @@ import '../03_MyComponents'
 
 Rectangle {
     // Funcions used on Login.qml
-    readonly property int _LOCAL_createUserTable:0 // ??
+    readonly property int _LOCAL_checkCurrentUser: 0
     readonly property int _LOCAL_recordCurrentUser:1
-    readonly property int _LOCAL_checkCurrentUser: 2
+
+    //verificar uso
     readonly property int _LOCAL_userData:3
+    readonly property int _LOCAL_createUserTable:0 // ??
 
     function localFunctions(choice){
         switch(choice){
-        case ___createUserTable:
-            return USERHANDLER.createUserTable()
-        case ___checkCurrentUser:
+        case _LOCAL_checkCurrentUser:
             return USERHANDLER.checkCurrentUser()
+        case _LOCAL_recordCurrentUser:
+            return USERHANDLER.recordCurrentUser()
+
         case ___recordCurrentUser:
             //            __USER_HANDLER.recordCurrentUser(userInfo)
             return USERHANDLER.recordCurrentUser(userInfo)

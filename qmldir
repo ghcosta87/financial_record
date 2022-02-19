@@ -1,3 +1,4 @@
 module QmlStyles
-singleton AppStyle 1.0 10_CodeLibrary/Styles/MyColors.qml
+singleton MyColors 1.0 10_CodeLibrary/Styles/MyColors.qml
+singleton MyFont 1.0 10_CodeLibrary/Styles/MyFont.qml
 

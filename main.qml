@@ -18,6 +18,7 @@ Window {
 
     // ############# application pragmas #############
     readonly property var _LIBCOLOR: MyColors
+    readonly property var _LIBFONT: MyFont
 
     //  application variables
     property int theme: _LIBCOLOR._dark
@@ -25,7 +26,13 @@ Window {
     //  user control variables
     property bool userLogged: false
 
-
+    // application font control
+    readonly property string font: defaultFont.name
+    readonly property var setFont: (fontName)=>{defaultFont.source=fontName}
+    FontLoader {
+        id: defaultFont
+        source: _LIBFONT._robotoThin
+    }
 
     id: mainWindow
     width: 360

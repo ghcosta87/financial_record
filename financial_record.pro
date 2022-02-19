@@ -5,6 +5,7 @@ QT += quick
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        01_CFiles/filehandler.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -47,3 +48,6 @@ DISTFILES += \
     00_Android/res/values/libs.xml
 
 00_Android_PACKAGE_SOURCE_DIR = $$PWD/00_Android
+
+HEADERS += \
+    01_CFiles/filehandler.h

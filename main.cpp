@@ -1,8 +1,12 @@
-#include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
-#include <QLocale>
+#include <QGuiApplication>
 #include <QTranslator>
+#include <QQmlContext>
+#include <QSslSocket>
+#include <QLocale>
+#include <QDir>
+
+#include <01_CFiles/filehandler.h>
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +32,54 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
+    FileHandler myLog;
+
+    QString productName=QSysInfo::prettyProductName();
+    QStringList productNameCheck=productName.split(" ");
+    QString customPath;
+
+    if(productNameCheck.size()>1){
+        if(productNameCheck[0]=="Linux"){customPath = "/home/gabriel/Documentos/financas_localstorage"; }
+        else if(productNameCheck[0]=="Android"){
+            customPath = "/storage/emulated/0/financas_localstorage";
+        }else{
+            customPath="unknow";
+        }
+    }
+    QDir dir;
+    if(customPath!="unknow"){
+        if(dir.mkpath(QString(customPath))){
+            engine.setOfflineStoragePath(QString(customPath));
+        }
+    }
+
+    myLog.setDataStoragePath(QString(customPath));
+
+    myLog.logRecorder("\n",true);
+    myLog.logRecorder("██████╗░███████╗░██████╗░██╗███╗░░██╗██╗███╗░░██╗░██████╗░",true);
+    myLog.logRecorder("██╔══██╗██╔════╝██╔════╝░██║████╗░██║██║████╗░██║██╔════╝░",true);
+    myLog.logRecorder("██████╦╝█████╗░░██║░░██╗░██║██╔██╗██║██║██╔██╗██║██║░░██╗░",true);
+    myLog.logRecorder("██╔══██╗██╔══╝░░██║░░╚██╗██║██║╚████║██║██║╚████║██║░░╚██╗",true);
+    myLog.logRecorder("██████╦╝███████╗╚██████╔╝██║██║░╚███║██║██║░╚███║╚██████╔╝",true);
+    myLog.logRecorder("╚═════╝░╚══════╝░╚═════╝░╚═╝╚═╝░░╚══╝╚═╝╚═╝░░╚══╝░╚═════╝░",true);
+    myLog.logRecorder(" ",true);
+
+
+    myLog.logRecorder("\nmain(){",true);
+    if(QSslSocket::supportsSsl())myLog.logRecorder("\tSSL Support ENABLE",true);
+    else myLog.logRecorder("\tSSL Support DISABLE",true);
+    myLog.logRecorder("\t"+QSslSocket::sslLibraryBuildVersionString(),true);
+    myLog.logRecorder("\t"+QSslSocket::sslLibraryVersionString(),true);
+    myLog.logRecorder("\tDatabase path is "+customPath,true);
+    myLog.logRecorder("\tRunning the application now",true);
+    myLog.logRecorder("\tend of main()\n}",true);
+
+    engine.rootContext()->setContextProperty("fileHandler",new FileHandler);
+    engine.rootContext()->setContextProperty("storagePath",QString(customPath));
+
     engine.load(url);
 
     return app.exec();
 }
+

@@ -10,7 +10,10 @@ QtObject {
     readonly property int _colorful:2
     readonly property int _dark:3
 
-    //  colors
-    readonly property var _background: ['','','','#707070']
+    readonly property string _dark_primary: '#9e9e9e'
+    readonly property string _dark_light: '#cfcfcf'
+    readonly property string _dark_dark: '#707070'
 
+    //  colors
+    readonly property var _background: ['','','',_dark_dark]
 }

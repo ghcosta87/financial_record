@@ -20,13 +20,10 @@ Window {
     readonly property var _LIBCOLOR: MyColors
     readonly property var _LIBFONT: MyFont
 
-    //  application variables
+    // ############ application variables ############
     property int theme: _LIBCOLOR._dark
 
-    //  user control variables
-    property bool userLogged: false
-
-    // application font control
+    // ########## application font control ###########
     readonly property string font: defaultFont.name
     readonly property var setFont: (fontName)=>{defaultFont.source=fontName}
     FontLoader {
@@ -34,12 +31,78 @@ Window {
         source: _LIBFONT._robotoThin
     }
 
+    // ########### user control variables ############
+    property bool userLogged: false
+
+    // ############### SQL constants #################
+    readonly property string dbId: 'MyDatabase'
+    readonly property string dbVersion: '1.0'
+    readonly property string dbDescription: 'Database application'
+    readonly property int dbsize: 1000000
+    property var db
+
+    // ############## C functions ###############
+    // => FileHandler
+    readonly property var cpp_debugStatus: fileHandler.getDebugOnline   //    -
+    readonly property var cpp_setDebug: fileHandler.setDebugOnline      // ( bool )
+    readonly property var cpp_dataLog: fileHandler.logRecorder          // ( string , bool )
+    readonly property var cpp_setPath: fileHandler.setDataStoragePath   // ( string )
+
+    // ############## global functions ###############
+    function myLog(myLogArg){
+        cpp_dataLog(myLogArg,cpp_debugStatus())
+    }
+
+    //    function showSnackBar(message){
+    //        snackBar.snackBarText=message
+    //        snackBar.fadeIn.running=true
+    //        snackBar.snackBarTimeOut=1000
+    //        snackBar.snackBarShowTime=1000
+    //    }
+
+    function errorHandling(functionInput,errorString){  //  call back function to handle the errors
+        try{
+            functionInput()
+            return true
+        }catch(e){
+            myLog('\n\t\t>ERROR<\n\tgot an error from '+errorString)
+            myLog('\tmessage: '+e.message+'\n')
+            return false
+        }
+    }
+
+    function openDatabase(){    // open database withtry catch protection
+        try {
+            return LocalStorage.openDatabaseSync(dbId, dbVersion,
+                                                 dbDescription, dbsize)
+        } catch (err) {
+            myLog('☓ openDatabase error: '+err.message)
+            return null
+        }
+    }
+
+    function valueNullHandling(value,type){ //  return value for an undefined or null
+        switch(type){
+        case 'text':
+            if(typeof value==='undefined' || value === null)return ' '
+            break
+        case 'number':
+            if(typeof value==='undefined' || value === null)return 0
+            break
+        }
+        return value
+    }
+
     id: mainWindow
     width: 360
     height: 640
     visible:true
-    //    visibility: SCRIPTS.visibilityType()
     title: qsTr("Financial record "+ versionNumber)
+
+    Component.onCompleted: {
+        cpp_setPath(storagePath)
+        myLog('\nmain.qml_onCompleted(){}')
+    }
 
     Rectangle{
         anchors.fill:parent

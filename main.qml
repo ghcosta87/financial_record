@@ -8,13 +8,22 @@ import QtQuick.Window 2.2
 import QtQml.Models 2.2
 
 import '.'
+import './03_MyComponents'
 
-ApplicationWindow {
+Window {
     readonly property string versionNumber: '20.0'
+
+    id: mainWindow
+    width: 360
+    height: 640
+    visible:true
+    //    visibility: SCRIPTS.visibilityType()
+    title: qsTr("Financial record "+ versionNumber)
 
     MainStacks{
         anchors.fill:parent
     }
+
     /*
 header
 
@@ -22,6 +31,5 @@ body
 
 footer
 */
-
 
 }

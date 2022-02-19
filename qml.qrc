@@ -5,5 +5,7 @@
         <file>MainStacks.qml</file>
         <file>20_Login/Login.qml</file>
         <file>20_Login/SignIn.qml</file>
+        <file>Tests.qml</file>
+        <file>03_MyComponents/Header.qml</file>
     </qresource>
 </RCC>

@@ -7,11 +7,9 @@
         <file>20_Login/SignIn.qml</file>
         <file>Tests.qml</file>
         <file>03_MyComponents/MyHeader.qml</file>
-        <file>03_MyComponents/MyFooter.qml</file>
+        <file>03_MyComponents/QuickAccessBar.qml</file>
         <file>03_MyComponents/MyTextInput.qml</file>
         <file>qmldir</file>
-        <file>10_CodeLibrary/MyStrings.qml</file>
-        <file>10_CodeLibrary/Styles/MyColors.qml</file>
         <file>03_MyComponents/MyButton.qml</file>
         <file>02_ExtrasLibrary/Fonts/Roboto-Black.ttf</file>
         <file>02_ExtrasLibrary/Fonts/Roboto-BlackItalic.ttf</file>
@@ -31,6 +29,13 @@
         <file>02_ExtrasLibrary/Fonts/Roboto-ThinItalic.ttf</file>
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.otf</file>
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.ttf</file>
-        <file>10_CodeLibrary/Styles/MyFont.qml</file>
+        <file>03_MyComponents/Test.qml</file>
+        <file>03_MyComponents/TestForm.ui.qml</file>
+        <file>10_LogicLibrary/SqlTables/UserTable.qml</file>
+        <file>10_LogicLibrary/Styles/MyColors.qml</file>
+        <file>10_LogicLibrary/Styles/MyFont.qml</file>
+        <file>10_LogicLibrary/MyStrings.qml</file>
+        <file>10_SqlHandlers/UserHandler.js</file>
+        <file>10_LogicLibrary/AppObjs/UserObj.qml</file>
     </qresource>
 </RCC>

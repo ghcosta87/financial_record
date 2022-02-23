@@ -21,28 +21,27 @@ Rectangle {
     function localFunctions(choice){
         switch(choice){
         case _LOCAL_checkCurrentUser:
-            return USERHANDLER.checkCurrentUser()
+            return __USER_HANDLER.checkCurrentUser()
         case _LOCAL_recordCurrentUser:
-            return USERHANDLER.recordCurrentUser()
+            return __USER_HANDLER.recordCurrentUser()
 
-        case ___recordCurrentUser:
-            //            __USER_HANDLER.recordCurrentUser(userInfo)
-            return USERHANDLER.recordCurrentUser(userInfo)
-        case ___userData:
-            return runC.userData(0," ")
+            //        case ___recordCurrentUser:
+            //            //            __USER_HANDLER.recordCurrentUser(userInfo)
+            //            return USERHANDLER.recordCurrentUser(userInfo)
+            //        case ___userData:
+            //            return runC.userData(0," ")
         }
     }
 
     id: root
-    anchors.fill: parent
+    anchors.verticalCenter: parent.verticalCenter
     color: 'transparent'
 
     property bool click: false
 
     Component.onCompleted: {
-        hideDrawer=true
         loginTimer.start()
-        myLog("\nQML LoginOnCompleted(){ Login component completed }")
+        myLog("\nLogin.qml_nCompleted(){ Login component completed }")
     }
 
     Timer {
@@ -63,123 +62,6 @@ Rectangle {
         }
         //            if(USERHANDLER.checkCurrentUser()){
         //            if(localFunctions(___checkCurrentUser)){
-    }
-
-    Rectangle {
-        id: loginContainer
-        color: 'transparent'
-        anchors {
-            fill: parent
-            topMargin: parent.height * 0.3
-            bottomMargin: parent.height * 0.6
-            leftMargin: parent.width * 0.1
-            rightMargin: parent.width * 0.1
-        }
-        MyTextInput {
-            id: userLogin
-            textHint: "Digite seu email"
-            anchors.fill: parent
-            iconPath: MyIcons.mailIcon
-            inputMaskOption: emailFormat
-            timerActive: false
-            maxLengh: 50
-        }
-    }
-
-    Rectangle {
-        id: passwordContainer
-        color: 'transparent'
-        height: loginContainer.height
-        anchors {
-            top: loginContainer.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: parent.height * 0.05
-            leftMargin: parent.width * 0.1
-            rightMargin: parent.width * 0.1
-        }
-        MyTextInput {
-            id: userPassword
-            textHint: "Digite sua senha"
-            anchors.fill: parent
-            iconPath: MyIcons.passcodeIcon
-            echoModeSelection: TextInput.Password
-            inputMaskOption: numbersOnly
-            timerActive: false
-            maxLengh: 6
-        }
-    }
-
-    BusyIndicator {
-        id: busyIndicator
-        palette.dark: MyColors.NIGHT_THEME_00
-        anchors {
-            top: passwordContainer.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: parent.height * 0.05
-            leftMargin: parent.width * 0.1
-            rightMargin: parent.width * 0.1
-        }
-    }
-
-    Rectangle {
-        id: signInContainer
-        visible: !busyIndicator.running
-        color: 'transparent'
-        height: loginContainer.height * 0.5
-
-        anchors {
-            top: passwordContainer.bottom
-            topMargin: parent.height * 0.02
-            left: parent.left
-            right: parent.right
-        }
-        Text {
-            id: signInField
-            text: "Cadastre-se aqui" //animar a dica do texto diminuindo e subindo
-            anchors.fill: parent
-            font.pixelSize: 15
-            color: click ? MyColors.NIGHT_THEME_20 : MyColors.NIGHT_THEME_00
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-        }
-        MouseArea {
-            id: signInFieldClick
-            anchors.fill: parent
-            onPressed: click=!click
-            onClicked:   {
-                stackView.push(signIn)
-            }
-        }
-    }
-
-    Rectangle {
-        id: buttonContainer
-        color: 'transparent'
-        anchors {
-            top: busyIndicator.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: parent.height * 0.07
-        }
-        MyButton {
-            rootWidth: passwordContainer.width
-            rootHeight: passwordContainer.height
-            title: "enter"
-            alignment: parent.horizontalCenter
-            theme: MyColors.NIGHT_THEME_00
-            onPressed: {
-
-            }
-            onReleased: {
-                //stackView.push(main_menu)
-                //runC.getAuthToken()
-                runC.signIn(runC.getAuthToken(),userLogin.myText,userPassword.myText)
-                busyIndicator.running=true
-                signCycle.start()
-            }
-        }
     }
 
     Timer {
@@ -212,4 +94,97 @@ Rectangle {
         }
     }
 
+    Rectangle{
+        id:rootContainer
+        color:'transparent'
+        height: (__fieldHeight+__spacing)*4
+        width: __fieldWidth
+        anchors{
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+
+        MyTextInput {
+            id: userLogin
+            height: __fieldHeight
+            width:__fieldWidth
+            textHint: "Digite seu email"
+            iconPath: MyIcons.mailIcon
+            inputMaskOption: emailFormat
+            timerActive: false
+            maxLengh: 50
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top:parent.top
+            }
+        }
+
+        MyTextInput {
+            id: userPassword
+            textHint: "Digite sua senha"
+            height: __fieldHeight
+            width:__fieldWidth
+            iconPath: MyIcons.passcodeIcon
+            echoModeSelection: TextInput.Password
+            inputMaskOption: numbersOnly
+            timerActive: false
+            maxLengh: 6
+            anchors{
+                horizontalCenter: parent.horizontalCenter
+                top:userLogin.bottom
+                topMargin: __spacing
+            }
+        }
+
+        BusyIndicator {
+            id: busyIndicator
+            height: __fieldHeight
+            palette.dark: MyColors.NIGHT_THEME_00
+            anchors{
+                horizontalCenter: parent.horizontalCenter
+                top:userPassword.bottom
+                topMargin: __spacing
+            }
+        }
+
+        Text {
+            visible: !busyIndicator.running
+            height: userLogin.height * 0.5
+            text: "Cadastre-se aqui" //animar a dica do texto diminuindo e subindo
+            font.pixelSize: 15
+            color: click ? MyColors.NIGHT_THEME_20 : MyColors.NIGHT_THEME_00
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                top:userPassword.bottom
+                topMargin: __spacing
+            }                id: signInField
+            MouseArea {
+                id: signInFieldClick
+                anchors.fill: parent
+                onPressed: click=!click
+                onClicked:   {stackView.push(signInQML)}
+            }
+        }
+
+        MyButton {
+            rootWidth: __fieldWidth
+            rootHeight: __fieldHeight
+            title: "enter"
+            alignment: parent.horizontalCenter
+            theme: 'white'
+            onPressed: {}
+            onReleased: {
+                cpp_signIn(cvar_googleKey(),userLogin.myText,userPassword.myText)
+                busyIndicator.running=true
+                signCycle.start()
+            }
+            anchors{
+                horizontalCenter: parent.horizontalCenter
+                top:busyIndicator.bottom
+                topMargin: __spacing
+            }
+        }
+    }
 }

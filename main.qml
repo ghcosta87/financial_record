@@ -9,10 +9,14 @@ import QtQml.Models 2.2
 
 import '.'
 import './03_MyComponents'
-import './10_CodeLibrary'
-import './10_CodeLibrary/Styles'
+import './10_LogicLibrary'
+import './10_LogicLibrary/Styles'
 
-Window {
+import './10_SqlHandlers/UserHandler.js' as UserHandler
+
+import './10_LogicLibrary/AppObjs'
+
+ApplicationWindow {
     // ############ application constants ############
     readonly property string versionNumber: '20.0'
 
@@ -24,12 +28,17 @@ Window {
     property int theme: _LIBCOLOR._dark
 
     // ########## application font control ###########
-    readonly property string font: defaultFont.name
+    readonly property string myFont: defaultFont.name
     readonly property var setFont: (fontName)=>{defaultFont.source=fontName}
     FontLoader {
         id: defaultFont
         source: _LIBFONT._robotoThin
     }
+
+    // ############# application sizes ###############
+    property real __fieldHeight: mainWindow.height*0.096
+    property real __fieldWidth: mainWindow.width*0.78
+    property real __spacing: mainWindow.width*0.08
 
     // ########### user control variables ############
     property bool userLogged: false
@@ -39,18 +48,37 @@ Window {
     readonly property string dbVersion: '1.0'
     readonly property string dbDescription: 'Database application'
     readonly property int dbsize: 1000000
-    property var db
 
-    // ############## C functions ###############
+    // ############ Javascript Handlers ###############
+    readonly property var __USER_HANDLER: UserHandler
+
+    // ################## Objects ####################
+    readonly property var userObj: UserObj
+
+    // ################ C functions ##################
     // => FileHandler
-    readonly property var cpp_debugStatus: fileHandler.getDebugOnline   //    -
-    readonly property var cpp_setDebug: fileHandler.setDebugOnline      // ( bool )
-    readonly property var cpp_dataLog: fileHandler.logRecorder          // ( string , bool )
-    readonly property var cpp_setPath: fileHandler.setDataStoragePath   // ( string )
+    readonly property var cpp_setDebug: fileHandler.setDebugOnline         // ( bool )
+    readonly property var cpp_dataLog: fileHandler.logRecorder             // ( string , bool )
+    readonly property var cpp_setPath: fileHandler.setDataStoragePath      // ( string )
+    readonly property var cpp_setGoogleKey: fileHandler.setGoogleKey       // ( )
+    readonly property var cpp_setRapidApiKey: fileHandler.setRapidApiKey   // ( )
+
+    // => Firebase
+    readonly property var cpp_firebaseInit: firebase.initializer           // ( bool , string )
+    readonly property var cpp_signUp: firebase.signUp                      // ( string , sring )
+    readonly property var cpp_signIn: firebase.signIn                      // ( string , sring )
+
+
+    // ################ C variables ##################
+    // => FileHandler
+    readonly property var cvar_debugStatus: fileHandler.getDebugOnline
+    readonly property var cvar_googleKey: fileHandler.getGoogleKey
+    readonly property var cvar_rapidApiKey: fileHandler.getRapidApiKey
+
 
     // ############## global functions ###############
     function myLog(myLogArg){
-        cpp_dataLog(myLogArg,cpp_debugStatus())
+        cpp_dataLog(myLogArg,cvar_debugStatus())
     }
 
     //    function showSnackBar(message){
@@ -101,7 +129,11 @@ Window {
 
     Component.onCompleted: {
         cpp_setPath(storagePath)
-        myLog('\nmain.qml_onCompleted(){}')
+        cpp_setGoogleKey()
+        cpp_setRapidApiKey()
+        cpp_firebaseInit(cvar_debugStatus,storagePath)
+
+        myLog('\nmain.qml_onCompleted(){\n\tinicial variables =>{\n\t\tstoragePath: '+storagePath+'\n\t\tgoogle key: '+cvar_googleKey+'\n\t\t rapidApi Key: '+cvar_rapidApiKey+'\n\t\tdebug status: '+cvar_debugStatus()+'}')
     }
 
     Rectangle{
@@ -125,7 +157,7 @@ Window {
         }
     }
 
-    MyFooter{
+    QuickAccessBar{
         id:footer
         clip:true
         width:parent.width

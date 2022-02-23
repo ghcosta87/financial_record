@@ -11,21 +11,32 @@ class FileHandler : public QObject
     Q_OBJECT
 
 public:
-    explicit FileHandler(QObject *parent = nullptr);
+    explicit FileHandler(QObject *parent = 0);
 
     Q_INVOKABLE void logRecorder(QString dataRecord,bool active);
 
-    Q_INVOKABLE bool getDebugOnline() const;
-    Q_INVOKABLE void setDebugOnline(bool newDebugOnline);
+    Q_INVOKABLE void initializer(bool debugValue,QString storagePath);
 
-    const QString &getDataStoragePath() const;
-    Q_INVOKABLE void setDataStoragePath(const QString &newDataStoragePath);
+    Q_INVOKABLE bool getDebugOnline();
+    void setDebugOnline(bool newDebugOnline);
+
+    Q_INVOKABLE QString getDataStoragePath() ;
+    Q_INVOKABLE void setDataStoragePath(QString newDataStoragePath);
+
+    Q_INVOKABLE QString getGoogleKey() ;
+    Q_INVOKABLE void setGoogleKey();
+
+    Q_INVOKABLE QString getRapidApiKey() ;
+    Q_INVOKABLE void setRapidApiKey();
 
 signals:
 
 private:
     bool debugOnline;
     QString dataStoragePath;
+
+    QString googleKey;
+    QString rapidApiKey;
 };
 
 #endif // FILEHANDLER_H

@@ -1,4 +1,8 @@
 module QmlStyles
-singleton MyColors 1.0 10_CodeLibrary/Styles/MyColors.qml
-singleton MyFont 1.0 10_CodeLibrary/Styles/MyFont.qml
+singleton MyColors 1.0 10_LogicLibrary/Styles/MyColors.qml
+singleton MyFont 1.0 10_LogicLibrary/Styles/MyFont.qml
+
+singleton UserTable 1.0 10_LogicLibrary/SqlTables/UserTable.qml
+
+singleton UserObj 1.0 10_LogicLibrary/AppObjs/UserObj.qml
 

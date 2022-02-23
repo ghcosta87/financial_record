@@ -2,8 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 Rectangle {
-
-    //
+    //  signals
     signal textLenghChanged
     signal whenTextChanged(string currentText)
 
@@ -78,7 +77,6 @@ Rectangle {
     Component.onCompleted: hintAnimation.running = false
 
     id: root
-    anchors.fill: parent
     color: 'transparent'
 
     Timer {

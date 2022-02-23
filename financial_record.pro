@@ -6,6 +6,8 @@ QT += quick
 
 SOURCES += \
         01_CFiles/filehandler.cpp \
+        01_CFiles/firebase.cpp \
+        01_CFiles/firebaseNetwork.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -50,4 +52,5 @@ DISTFILES += \
 00_Android_PACKAGE_SOURCE_DIR = $$PWD/00_Android
 
 HEADERS += \
-    01_CFiles/filehandler.h
+    01_CFiles/filehandler.h \
+    01_CFiles/firebase.h

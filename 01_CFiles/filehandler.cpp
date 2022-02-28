@@ -77,11 +77,11 @@ void FileHandler::setRapidApiKey()
     }else rapidApiKey="";
 }
 
-
 bool FileHandler::getDebugOnline()
 {
     return debugOnline;
 }
+
 void FileHandler::setDebugOnline(bool newDebugOnline)
 {
     debugOnline = newDebugOnline;

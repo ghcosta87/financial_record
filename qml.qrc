@@ -30,12 +30,13 @@
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.otf</file>
         <file>02_ExtrasLibrary/Fonts/TravelingTypewriter.ttf</file>
         <file>03_MyComponents/Test.qml</file>
-        <file>03_MyComponents/TestForm.ui.qml</file>
         <file>10_LogicLibrary/SqlTables/UserTable.qml</file>
         <file>10_LogicLibrary/Styles/MyColors.qml</file>
         <file>10_LogicLibrary/Styles/MyFont.qml</file>
         <file>10_LogicLibrary/MyStrings.qml</file>
-        <file>10_SqlHandlers/UserHandler.js</file>
         <file>10_LogicLibrary/AppObjs/UserObj.qml</file>
+        <file>21_Main/HomePage.qml</file>
+        <file>11_SqlHandlers/UserHandler.js</file>
+        <file>03_MyComponents/MyAlert.qml</file>
     </qresource>
 </RCC>

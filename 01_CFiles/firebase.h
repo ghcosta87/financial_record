@@ -5,9 +5,14 @@
 #include <QNetworkRequest>
 #include <QJsonDocument>
 #include <QNetworkReply>
+#include <QQmlProperty>
+#include <QJsonObject>
 #include <QObject>
 
 #include "./01_CFiles/filehandler.h"
+#include "./02_CObjects/UserClass.h"
+#include "./02_CObjects/Constants.h"
+#include "./02_CObjects/QmlClass.h"
 
 class Firebase : public QObject
 {
@@ -18,8 +23,11 @@ public:
 
     Q_INVOKABLE void signUp(const QString &token,const QString &email,const QString &password);
     Q_INVOKABLE void signIn(const QString &token,const QString &email,const QString &password);
+    Q_INVOKABLE int authComplete(bool reset);
 
     Q_INVOKABLE void initializer(bool debugValue,QString storagePath);
+
+    Q_INVOKABLE void setMainQmlObject( QObject *value);
 
     void doPost(const QString &endPoint,const QJsonDocument &jsonData);
     void doPut(const QString &endPoint,const QJsonDocument &jsonData);
@@ -27,12 +35,10 @@ public:
     void doGet(const QString &endPoint);
     void doDelete(const QString &endPoint);
 
-    Q_INVOKABLE static int getPUTREQUEST();
-    Q_INVOKABLE static int getUPDATEREQUEST();
-    Q_INVOKABLE static int getPOSTREQUEST();
-    Q_INVOKABLE static int getLOGINREQUEST();
-    Q_INVOKABLE static int getGETREQUEST();
-    Q_INVOKABLE static int getDELETEREQUEST();
+    Q_INVOKABLE QString getConstants();
+    Q_INVOKABLE QString getUserData();
+
+    Q_INVOKABLE void setDebug(bool active,QString path);
 
 signals:
 
@@ -42,23 +48,29 @@ public slots:
 
 private:
     FileHandler fileHandler;
+    UserClass userClass;
+    static Constants constants;
+    QmlClass qmlClass;
+
+    QObject *mainQmlObject;
+    void setQMLVariables(QString varName,QString varValue);
 
     QNetworkAccessManager *m_networkAccessManager;
     QNetworkReply *m_networkReply;
+    QByteArray answer;
+    void getIdToken(QByteArray answer);
     void networkConnections();
     void communicationFinished();
-    QByteArray answer;
+    void setCommunicationError();
+    bool communicationError=false;
+    int isAuthenticated;
 
     int atemptNumber=0;
     bool isTryingAgain=false;
 
     int restType;
-    const static int PUTREQUEST=0;
-    const static int UPDATEREQUEST=1;
-    const static int POSTREQUEST=2;
-    const static int LOGINREQUEST=3;
-    const static int GETREQUEST=4;
-    const static int DELETEREQUEST=6;
+
+//    colocar as contasntyes do isauth aki
 };
 
 #endif // FIREBASE_H

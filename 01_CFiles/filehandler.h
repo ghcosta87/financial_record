@@ -17,11 +17,11 @@ public:
 
     Q_INVOKABLE void initializer(bool debugValue,QString storagePath);
 
-    Q_INVOKABLE bool getDebugOnline();
-    void setDebugOnline(bool newDebugOnline);
+    Q_INVOKABLE  bool getDebugOnline();
+     void setDebugOnline(bool newDebugOnline);
 
-    Q_INVOKABLE QString getDataStoragePath() ;
-    Q_INVOKABLE void setDataStoragePath(QString newDataStoragePath);
+    Q_INVOKABLE  QString getDataStoragePath() ;
+    Q_INVOKABLE  void setDataStoragePath(QString newDataStoragePath);
 
     Q_INVOKABLE QString getGoogleKey() ;
     Q_INVOKABLE void setGoogleKey();

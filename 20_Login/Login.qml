@@ -69,27 +69,31 @@ Rectangle {
         interval: 500
         repeat: true
         onTriggered: {
-            if (runC.authComplete(false)===1) {
-                //                                userInfo=runC.userData()
-                userInfo=localFunctions(___userData)
-                //                                USERHANDLER.createUserTable()
-                localFunctions(___createUserTable)
-                //                                USERHANDLER.recordCurrentUser(userInfo)
-                localFunctions(___recordCurrentUser)
-                runC.authComplete(true)
+            switch(qmlVar_isAuthenticated){
+            case _LOGIN_AUTHENTICATED:
+                //ATUALIZAR ESSAS FUNCOES
+                //                localFunctions(___createUserTable)
+                //                localFunctions(___recordCurrentUser)
+
+                //                runC.authComplete(true)
                 myLog('user logged')
                 signCycle.stop()
                 busyIndicator.running = false
-                showSnackBar('Bem Vindo!')
-                stackView.push(mainPage)
-            }
-            if (runC.authComplete(false)===2) {
+                alert.show('Bem Vindo!')
+                stackView.push(homePage)
+                break
+            case _LOGIN_INCOMPLETEMSG:
+                break
+            case _LOGIN_NOTAUTHENTICATED:
+                break
+            case _LOGIN_ANSWERERROR:
                 busyIndicator.running = false
-                showSnackBar('Connection error ...')
-                runC.authComplete(true)
+//                showSnackBar('Connection error ...')
+//                runC.authComplete(true)
                 myLog('erro user not logged')
                 //criar um popup para receber código de error
                 //e tambem salvar os dados no log via c++
+                break
             }
         }
     }

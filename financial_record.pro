@@ -1,4 +1,5 @@
 QT += quick
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -7,7 +8,9 @@ QT += quick
 SOURCES += \
         01_CFiles/filehandler.cpp \
         01_CFiles/firebase.cpp \
+        01_CFiles/firebaseFeedback.cpp \
         01_CFiles/firebaseNetwork.cpp \
+        01_CFiles/toolbox.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -53,4 +56,8 @@ DISTFILES += \
 
 HEADERS += \
     01_CFiles/filehandler.h \
-    01_CFiles/firebase.h
+    01_CFiles/firebase.h \
+    01_CFiles/toolbox.h \
+    02_CObjects/Constants.h \
+    02_CObjects/QmlClass.h \
+    02_CObjects/UserClass.h

@@ -3,7 +3,8 @@
 Firebase::Firebase(QObject *parent)
     : QObject{parent}
 {
-  m_networkAccessManager = new QNetworkAccessManager(this);
+//    fileHandler.setDebugOnline(true);
+    m_networkAccessManager = new QNetworkAccessManager(this);
 }
 
 void Firebase::signUp(const QString &token,const QString &email,const QString &password)
@@ -22,7 +23,7 @@ void Firebase::signUp(const QString &token,const QString &email,const QString &p
     QJsonDocument jsonPayload=QJsonDocument::fromVariant(authData);
     fileHandler.logRecorder("doPost with credentials",fileHandler.getDebugOnline());
 
-    restType=LOGINREQUEST;
+    restType=constants.LOGINREQUEST;
     doPost(singInEndPoint,jsonPayload);
     fileHandler.logRecorder("}\n",fileHandler.getDebugOnline());
 }
@@ -34,6 +35,11 @@ void Firebase::signIn(const QString &token, const QString &email, const QString 
     QString link="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
     QString singInEndPoint = link+token;
 
+    userClass.token=token;
+    userClass.email=email;
+    userClass.pass=password;
+    answer="";
+
     QVariantMap authData;
     authData["email"]=email;
     authData["password"]=password;
@@ -43,7 +49,7 @@ void Firebase::signIn(const QString &token, const QString &email, const QString 
     QJsonDocument jsonPayload=QJsonDocument::fromVariant(authData);
     fileHandler.logRecorder("doPost with credentials",fileHandler.getDebugOnline());
 
-    restType=LOGINREQUEST;
+    restType=constants.LOGINREQUEST;
     doPost(singInEndPoint,jsonPayload);
     fileHandler.logRecorder("}\n",fileHandler.getDebugOnline());
 }
@@ -54,11 +60,26 @@ void Firebase::initializer(bool debugValue, QString storagePath)
     fileHandler.setDataStoragePath(storagePath);
 }
 
-int Firebase::getPUTREQUEST(){return PUTREQUEST;}
-int Firebase::getUPDATEREQUEST(){return UPDATEREQUEST;}
-int Firebase::getPOSTREQUEST(){return POSTREQUEST;}
-int Firebase::getLOGINREQUEST(){return LOGINREQUEST;}
-int Firebase::getGETREQUEST(){return GETREQUEST;}
-int Firebase::getDELETEREQUEST(){return DELETEREQUEST;}
+void Firebase::setMainQmlObject(QObject *value)
+{
+    mainQmlObject=value;
+}
+
+QString Firebase::getConstants()
+{
+    QJsonDocument myJson;
+    myJson = Constants::getConstants();
+    QString output=myJson.toJson(QJsonDocument::Compact);
+    return output;
+}
+
+QString Firebase::getUserData()
+{
+    QJsonDocument myJson;
+    QString output;
+    myJson=userClass.getData();
+    output=myJson.toJson(QJsonDocument::Compact);
+    return output;
+}
 
 

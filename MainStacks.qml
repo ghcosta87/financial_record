@@ -3,6 +3,7 @@ import QtQuick.Controls 2.12
 
 import '.'
 import './20_Login'
+import './21_Main'
 
 Item {
 
@@ -16,6 +17,8 @@ Item {
     Component{id:loginQML;Login{}}
 
     Component{id:signInQML;SignIn{}}
+
+    Component{id:homePage;HomePage{}}
 
     Component{id:testQML;Tests{}}
 }

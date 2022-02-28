@@ -11,20 +11,20 @@
 
 int main(int argc, char *argv[])
 {
-//#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-//    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-//#endif
+    //#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    //    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //#endif
     QGuiApplication app(argc, argv);
 
-//    QTranslator translator;
-//    const QStringList uiLanguages = QLocale::system().uiLanguages();
-//    for (const QString &locale : uiLanguages) {
-//        const QString baseName = "financial_record_" + QLocale(locale).name();
-//        if (translator.load(":/i18n/" + baseName)) {
-//            app.installTranslator(&translator);
-//            break;
-//        }
-//    }
+    //    QTranslator translator;
+    //    const QStringList uiLanguages = QLocale::system().uiLanguages();
+    //    for (const QString &locale : uiLanguages) {
+    //        const QString baseName = "financial_record_" + QLocale(locale).name();
+    //        if (translator.load(":/i18n/" + baseName)) {
+    //            app.installTranslator(&translator);
+    //            break;
+    //        }
+    //    }
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -76,9 +76,12 @@ int main(int argc, char *argv[])
     myLog.logRecorder("\tRunning the application now",true);
     myLog.logRecorder("\tend of main()\n}",true);
 
+    Firebase firebase;
+
     engine.rootContext()->setContextProperty("fileHandler",new FileHandler);
     engine.rootContext()->setContextProperty("firebase",new Firebase);
     engine.rootContext()->setContextProperty("storagePath",QString(customPath));
+//    engine.rootContext()->setContextProperty("constants",QVariant::fromValue(firebase.getConstants()));
 
     engine.load(url);
 

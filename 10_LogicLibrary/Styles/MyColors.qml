@@ -16,4 +16,5 @@ QtObject {
 
     //  colors
     readonly property var _background: ['','','',_dark_dark]
+    readonly property var _alert:['','','','']
 }

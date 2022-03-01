@@ -21,7 +21,7 @@ import './10_LogicLibrary/AppObjs'
 
 ApplicationWindow {
     // ############ application constants ############
-    readonly property string versionNumber: '20.5'
+    readonly property string versionNumber: '20.6'
     readonly property string emptyField: '---'
 
     // ############# application pragmas #############

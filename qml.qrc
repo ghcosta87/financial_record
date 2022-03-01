@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>README.md</file>
         <file>MainStacks.qml</file>
         <file>20_Login/Login.qml</file>
         <file>20_Login/SignIn.qml</file>

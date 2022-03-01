@@ -34,7 +34,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android: include(/home/gabriel/Android/Sdk/android_openssl/openssl.pri)
 
 DISTFILES += \
-    ../LICENSE \
     00_Android/00_AndroidManifest.xml \
     00_Android/build.gradle \
     00_Android/gradle.properties \
@@ -52,7 +51,9 @@ DISTFILES += \
     00_Android/res/drawable-mdpi/icon.png \
     00_Android/res/drawable-mdpi/logo_landscape.png \
     00_Android/res/drawable-mdpi/logo_portrait.png \
-    00_Android/res/values/libs.xml
+    00_Android/res/values/libs.xml \
+    LICENSE \
+    README.md
 
 00_Android_PACKAGE_SOURCE_DIR = $$PWD/00_Android
 

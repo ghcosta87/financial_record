@@ -5,4 +5,9 @@ singleton MyFont 1.0 10_LogicLibrary/Styles/MyFont.qml
 singleton UserTable 1.0 10_LogicLibrary/SqlTables/UserTable.qml
 
 singleton UserObj 1.0 10_LogicLibrary/AppObjs/UserObj.qml
+singleton BankObj 1.0 10_LogicLibrary/AppObjs/BankObj.qml
+singleton CardObj 1.0 10_LogicLibrary/AppObjs/CardObj.qml
+singleton InvestmentsObj 1.0 10_LogicLibrary/AppObjs/InvestmentsObj.qml
+singleton StatmentObj 1.0 10_LogicLibrary/AppObjs/StatmentObj.qml
+singleton BillObj 1.0 10_LogicLibrary/AppObjs/BillObj.qml
 

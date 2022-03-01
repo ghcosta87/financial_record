@@ -7,9 +7,20 @@ void Firebase::doPost(const QString &endPoint,const QJsonDocument &jsonData)
     newRequest.setHeader(QNetworkRequest::ContentTypeHeader,QString("application/json"));
     m_networkReply=m_networkAccessManager->post(newRequest,jsonData.toJson());
 
-    networkConnections();
-
     fileHandler.logRecorder("\ndoPost("+endPoint+","+jsonData.toJson(QJsonDocument::Compact)+"){\ndoPost completed\n}\n",fileHandler.getDebugOnline());
+
+    networkConnections();
+}
+
+void Firebase::doGet(const QString &endPoint)
+{
+    QNetworkRequest newRequest((QUrl(endPoint)));
+     newRequest.setHeader(QNetworkRequest::ContentTypeHeader,QString("application/json"));
+     m_networkReply=m_networkAccessManager->get(newRequest);
+
+     fileHandler.logRecorder("\ndoGet("+endPoint+"){\ndoGet completed\n}\n",fileHandler.getDebugOnline());
+
+     networkConnections();
 }
 
 void Firebase::networkConnections()

@@ -20,6 +20,7 @@ void Firebase::getPostAnswer()
         fileHandler.logRecorder("\tanswer from update request:",fileHandler.getDebugOnline());
         break;
     case Constants::GETREQUEST:
+        setQMLVariables(qmlClass.firebaseData,answer);
         fileHandler.logRecorder("\tanswer from get request:",fileHandler.getDebugOnline());
         break;
     case Constants::POSTREQUEST:
@@ -52,6 +53,7 @@ void Firebase::getIdToken(QByteArray answer)
         fileHandler.logRecorder("getIdToken got an error = "+QString::number(isAuthenticated),fileHandler.getDebugOnline());
 
         setQMLVariables(qmlClass.alertMessage,errorAlert);
+//        setQMLVariables(qmlClass.isAuthenticated,QString::number(isAuthenticated));
 
     }else if(jsonDocument.object().contains("registered")){
         isAuthenticated=constants.AUTHENTICATED;
@@ -61,7 +63,7 @@ void Firebase::getIdToken(QByteArray answer)
         userClass.email=jsonDocument.object().value("email").toString();
         userClass.name=jsonDocument.object().value("displayName").toString();
 
-        setQMLVariables(qmlClass.isAuthenticated,QString::number(constants.AUTHENTICATED));
+//        setQMLVariables(qmlClass.isAuthenticated,QString::number(isAuthenticated));
         setQMLVariables(qmlClass.userData,userClass.getData().toJson(QJsonDocument::Compact));
         setQMLVariables(qmlClass.alertMessage,"Login completed...");
 
@@ -84,6 +86,7 @@ void Firebase::getIdToken(QByteArray answer)
         fileHandler.logRecorder("\tsomething wrong happen ...",fileHandler.getDebugOnline());
     }
 
+    setQMLVariables(qmlClass.isAuthenticated,QString::number(isAuthenticated));
     fileHandler.logRecorder("\tend of getIdToken()\n}",fileHandler.getDebugOnline());
 }
 

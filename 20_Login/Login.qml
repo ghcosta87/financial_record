@@ -11,27 +11,15 @@ import '../03_MyComponents'
 
 Rectangle {
     // Funcions used on Login.qml
-    readonly property int _LOCAL_checkCurrentUser: 0
-    readonly property int _LOCAL_recordCurrentUser:1
+    readonly property var _LOCAL_checkCurrentUser: __USER_HANDLER.checkCurrentUser
+    readonly property var _LOCAL_recordCurrentUser: __USER_HANDLER.recordCurrentUser
+//    readonly property var _LOCAL_getUserData:
+
+    readonly property var _LOCAL_signIn: cpp_signIn
 
     //verificar uso
     readonly property int _LOCAL_userData:3
     readonly property int _LOCAL_createUserTable:0 // ??
-
-    function localFunctions(choice){
-        switch(choice){
-        case _LOCAL_checkCurrentUser:
-            return __USER_HANDLER.checkCurrentUser()
-        case _LOCAL_recordCurrentUser:
-            return __USER_HANDLER.recordCurrentUser()
-
-            //        case ___recordCurrentUser:
-            //            //            __USER_HANDLER.recordCurrentUser(userInfo)
-            //            return USERHANDLER.recordCurrentUser(userInfo)
-            //        case ___userData:
-            //            return runC.userData(0," ")
-        }
-    }
 
     id: root
     anchors.verticalCenter: parent.verticalCenter
@@ -51,11 +39,14 @@ Rectangle {
         onTriggered: {
             myLog('\nQML loginTimerOnTriggered()')
             loginTimer.stop()
-            if(__USER_HANDLER.checkCurrentUser()){
-                runC.userData(true,userInfo)
-                appMonthObj.changed=__JAVASCRIPT.monthChanged()
-                showSnackBar(__STRING._welcomeText[__LANGUAGE._US])
-                stackView.push(mainPage)
+            if(_LOCAL_checkCurrentUser()){
+//                runC.userData(true,userInfo)
+                _LOCAL_signIn(cvar_googleKey(),userObj.email,userObj.pass)
+                busyIndicator.running=true
+                signCycle.start()
+//                appMonthObj.changed=__JAVASCRIPT.monthChanged()
+//                showSnackBar(__STRING._welcomeText[__LANGUAGE._US])
+//                stackView.push(mainPage)
             }else{
                 busyIndicator.running=false
             }
@@ -71,28 +62,21 @@ Rectangle {
         onTriggered: {
             switch(qmlVar_isAuthenticated){
             case _LOGIN_AUTHENTICATED:
-                //ATUALIZAR ESSAS FUNCOES
-                //                localFunctions(___createUserTable)
-                //                localFunctions(___recordCurrentUser)
-
-                //                runC.authComplete(true)
-                myLog('user logged')
+                myLog('\tsignCycle => onTriggered(){ User logged }')
+                _LOCAL_recordCurrentUser(userObj.getObj())
                 signCycle.stop()
                 busyIndicator.running = false
                 alert.show('Bem Vindo!')
+                __FIREBASE_HANDLER.getAll()
                 stackView.push(homePage)
                 break
             case _LOGIN_INCOMPLETEMSG:
                 break
             case _LOGIN_NOTAUTHENTICATED:
+                busyIndicator.running = false
                 break
             case _LOGIN_ANSWERERROR:
                 busyIndicator.running = false
-//                showSnackBar('Connection error ...')
-//                runC.authComplete(true)
-                myLog('erro user not logged')
-                //criar um popup para receber código de error
-                //e tambem salvar os dados no log via c++
                 break
             }
         }

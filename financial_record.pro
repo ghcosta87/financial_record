@@ -10,6 +10,7 @@ SOURCES += \
         01_CFiles/firebase.cpp \
         01_CFiles/firebaseFeedback.cpp \
         01_CFiles/firebaseNetwork.cpp \
+        01_CFiles/firebaseTransactions.cpp \
         01_CFiles/toolbox.cpp \
         main.cpp
 
@@ -33,6 +34,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android: include(/home/gabriel/Android/Sdk/android_openssl/openssl.pri)
 
 DISTFILES += \
+    ../LICENSE \
     00_Android/00_AndroidManifest.xml \
     00_Android/build.gradle \
     00_Android/gradle.properties \
@@ -59,5 +61,6 @@ HEADERS += \
     01_CFiles/firebase.h \
     01_CFiles/toolbox.h \
     02_CObjects/Constants.h \
+    02_CObjects/FirebaseClass.h \
     02_CObjects/QmlClass.h \
     02_CObjects/UserClass.h

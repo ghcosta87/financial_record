@@ -11,10 +11,10 @@ class UserClass
 public:
     QJsonDocument getData();
 
+    QString name;
+    QString email;
     QString token;
     QString id;
-    QString email;
-    QString name;
     QString pass;
 };
 

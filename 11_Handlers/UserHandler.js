@@ -18,18 +18,17 @@ function checkCurrentUser(){
     let success=errorHandling(()=>{
                                   openDatabase().transaction(function(tx){
                                       var sqlCommand=tx.executeSql(__USER_TABLE.selectAll)
-                                      if(sqlCommand.rows.length>0){
-                                          if(sqlCommand.rows.item(0).uid!==emptyField){
-                                              userObj.name=sqlCommand.rows.item(0).name
-                                              userObj.email=sqlCommand.rows.item(0).email
-                                              userObj.pass=sqlCommand.rows.item(0).pass
-                                              userObj.uid=sqlCommand.rows.item(0).uid
-                                              userObj.token=sqlCommand.rows.item(0).token
-                                              myLog('\tuser found! user uid > '+sqlCommand.rows.item(0).uid)
-                                              myLog(JSON.stringify(userObj))
-                                              exit=true
-                                          }else myLog('\tno user found')
-                                      }
+                                      if(sqlCommand.rows.length>0 && sqlCommand.rows.item(0).id!==emptyField){
+                                          userObj.setObj(sqlCommand.rows.item(0).name,
+                                                         sqlCommand.rows.item(0).email,
+                                                        sqlCommand.rows.item(0).token,
+                                                         sqlCommand.rows.item(0).pass,
+                                                         sqlCommand.rows.item(0).id
+                                                         )
+                                          myLog('\tuser found! user uid > '+sqlCommand.rows.item(0).uid)
+                                          myLog(JSON.stringify(userObj))
+                                          exit=true
+                                      }else myLog('\tno user found')
                                   })},'checkCurrentUser()[UserHandler.js]')
 
     if (!success)myLog('\tError checking user')
@@ -39,10 +38,10 @@ function checkCurrentUser(){
 }
 
 function recordCurrentUser(user){
-    myLog('\nrecordCurrentUser( {'+user.email,user.nick,user.uid,user.pass,user.token+'}){')
+    myLog('\nrecordCurrentUser( {'+user.email,user.name,user.id,user.pass,user.token+'}){')
     let success=errorHandling(()=>{
                                   openDatabase().transaction(function(tx){
-                                      tx.executeSql(__USER_TABLE.recordUser,[user.email,user.nick,user.uid,user.pass,user.token])
+                                      tx.executeSql(__USER_TABLE.recordUser,[user.email,user.name,user.id,user.pass,user.token])
                                   })
                               },'recordCurrentUser()[UserHandler.js]')
     if(success)myLog('User recorded\n}<recordCurrentUser>\n')
@@ -54,7 +53,7 @@ function logUserOut(){
     let success=errorHandling(()=>{
                                   openDatabase().transaction(function(tx){
                                       tx.executeSql(__USER_TABLE.recordUser,[emptyField,emptyField,emptyField,emptyField,emptyField])
-//                                      stackView.push(loginForm)
+                                      //                                      stackView.push(loginForm)
                                   })
                               },'logUserOut()[UserHandler.js]')
     if(success)myLog('User loged out succesfully\n')

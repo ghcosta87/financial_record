@@ -36,7 +36,13 @@
         <file>10_LogicLibrary/MyStrings.qml</file>
         <file>10_LogicLibrary/AppObjs/UserObj.qml</file>
         <file>21_Main/HomePage.qml</file>
-        <file>11_SqlHandlers/UserHandler.js</file>
         <file>03_MyComponents/MyAlert.qml</file>
+        <file>11_Handlers/UserHandler.js</file>
+        <file>11_Handlers/FirebaseHandler.js</file>
+        <file>10_LogicLibrary/AppObjs/BillObj.qml</file>
+        <file>10_LogicLibrary/AppObjs/StatmentObj.qml</file>
+        <file>10_LogicLibrary/AppObjs/CardObj.qml</file>
+        <file>10_LogicLibrary/AppObjs/InvestmentsObj.qml</file>
+        <file>10_LogicLibrary/AppObjs/BankObj.qml</file>
     </qresource>
 </RCC>

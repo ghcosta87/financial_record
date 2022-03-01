@@ -119,7 +119,7 @@ Rectangle {
 
             }
             onReleased: {
-                cpp_signUp(cvar_googleKey,userEmail.myText,userPassword.myText,nickname.myText)
+                cpp_signUp(cvar_googleKey(),userEmail.myText,userPassword.myText,nickname.myText)
 //                runC.signUp(runC.getAuthToken(), userEmail.myText,userPassword.myText,nickname.myText)
                 busyIndicator.running = true
                 authCycle.start()
@@ -132,21 +132,41 @@ Rectangle {
         interval: 500
         repeat: true
         onTriggered: {
-            if (runC.authComplete(false)===1) {
+            switch(qmlVar_isAuthenticated){
+            case _LOGIN_AUTHENTICATED:
+                myLog('\tsignUpCycle => onTriggered(){ User logged }')
+                __USER_HANDLER.recordCurrentUser(userObj.getObj())
                 authCycle.stop()
                 busyIndicator.running = false
-
-                USERHANDLER.recordCurrentUser()
-
-                //salvar nickname no firebase
-                stackView.push(main_menu)
-            }
-            if (runC.authComplete(false)===2) {
-                authCycle.stop()
+                alert.show('Bem Vindo '+userObj.name+' !')
+                __FIREBASE_HANDLER.getAll()
+                stackView.push(homePage)
+                break
+            case _LOGIN_INCOMPLETEMSG:
+                break
+            case _LOGIN_NOTAUTHENTICATED:
                 busyIndicator.running = false
-                //                JsonCheck.errorParse(runC.jsonFeedback())
-                runC.authComplete(true)
+                break
+            case _LOGIN_ANSWERERROR:
+                busyIndicator.running = false
+                break
             }
+
+//            if (runC.authComplete(false)===1) {
+//                authCycle.stop()
+//                busyIndicator.running = false
+
+//                USERHANDLER.recordCurrentUser()
+
+//                //salvar nickname no firebase
+//                stackView.push(main_menu)
+//            }
+//            if (runC.authComplete(false)===2) {
+//                authCycle.stop()
+//                busyIndicator.running = false
+//                //                JsonCheck.errorParse(runC.jsonFeedback())
+//                runC.authComplete(true)
+//            }
         }
     }
 

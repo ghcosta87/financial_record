@@ -13,6 +13,7 @@
 #include "./02_CObjects/UserClass.h"
 #include "./02_CObjects/Constants.h"
 #include "./02_CObjects/QmlClass.h"
+#include "./02_CObjects/FirebaseClass.h"
 
 class Firebase : public QObject
 {
@@ -21,8 +22,9 @@ public:
     //    explicit Firebase(QObject *parent = 0);
     explicit Firebase(QObject *parent = nullptr);
 
-    Q_INVOKABLE void signUp(const QString &token,const QString &email,const QString &password);
+    Q_INVOKABLE void signUp(const QString &token,const QString &email,const QString &password,const QString &displayName);
     Q_INVOKABLE void signIn(const QString &token,const QString &email,const QString &password);
+    Q_INVOKABLE void firebaseAPI(QString token,QString stringToSend,QString uidPath,QString firebasePath,int requestType);
     Q_INVOKABLE int authComplete(bool reset);
 
     Q_INVOKABLE void initializer(bool debugValue,QString storagePath);
@@ -51,6 +53,7 @@ private:
     UserClass userClass;
     static Constants constants;
     QmlClass qmlClass;
+    FirebaseClass firebaseClass;
 
     QObject *mainQmlObject;
     void setQMLVariables(QString varName,QString varValue);

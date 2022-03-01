@@ -9,6 +9,7 @@ class Constants
 {
 public:
     QJsonDocument static getConstants();
+    QString static getNames(int variable);
 
     const static int PUTREQUEST=0;
     const static int UPDATEREQUEST=1;
@@ -17,10 +18,10 @@ public:
     const static int GETREQUEST=4;
     const static int DELETEREQUEST=6;
 
-    const static int NOTAUTHENTICATED=0;
-    const static int AUTHENTICATED=1;
-    const static int ANSWERERROR=2;
-    const static int INCOMPLETEMSG=2;
+    const static int NOTAUTHENTICATED=10;
+    const static int AUTHENTICATED=11;
+    const static int ANSWERERROR=12;
+    const static int INCOMPLETEMSG=12;
 
     static const inline QString googleKey="\"code\": 400";
     static const inline QString emailError="\"message\": \"EMAIL_NOT_FOUND\"";
@@ -46,4 +47,16 @@ inline QJsonDocument Constants::getConstants()
 
     QJsonDocument jsonPayload=QJsonDocument::fromVariant(output);
     return jsonPayload;
+}
+
+inline QString Constants::getNames(int variable){
+    switch(variable){
+    case PUTREQUEST: return "PUTREQUEST";
+    case UPDATEREQUEST: return "UPDATEREQUEST";
+    case POSTREQUEST: return "POSTREQUEST";
+    case LOGINREQUEST: return "LOGINREQUEST";
+    case GETREQUEST: return "GETREQUEST";
+    case DELETEREQUEST: return "DELETEREQUEST";
+    }
+    return "null";
 }

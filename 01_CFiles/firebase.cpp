@@ -7,17 +7,24 @@ Firebase::Firebase(QObject *parent)
     m_networkAccessManager = new QNetworkAccessManager(this);
 }
 
-void Firebase::signUp(const QString &token,const QString &email,const QString &password)
+void Firebase::signUp(const QString &token,const QString &email,const QString &password,const QString &displayName)
 {
     fileHandler.logRecorder("\nsignUp(const QString &token:"+token+",const QString &email:"+email+",const QString &password:"+password+"){",fileHandler.getDebugOnline());
 
     QString link="https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
     QString singInEndPoint = link+token;
 
+    userClass.token=token;
+    userClass.email=email;
+    userClass.pass=password;
+    userClass.name=displayName;
+    answer="";
+
     QVariantMap authData;
     authData["email"]=email;
     authData["password"]=password;
     authData["returnSecureToken"]=true;
+    authData["displayName"]=displayName;
     //    setUserPass(password);
 
     QJsonDocument jsonPayload=QJsonDocument::fromVariant(authData);

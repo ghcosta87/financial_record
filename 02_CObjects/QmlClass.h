@@ -13,4 +13,6 @@ public:
     const QString userData="qmlVar_userData";
 
     const QString alertMessage="qmlVar_firebaseRestError";
+
+    const QString firebaseData="qmlVar_firebaseData";
 };

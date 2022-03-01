@@ -13,13 +13,15 @@ import './10_LogicLibrary'
 import './10_LogicLibrary/Styles'
 import './10_LogicLibrary/SqlTables'
 
-import './11_SqlHandlers/UserHandler.js' as UserHandler
+import './11_Handlers/UserHandler.js' as UserHandler
+import './11_Handlers/FirebaseHandler.js' as FirebaseHandler
+
 
 import './10_LogicLibrary/AppObjs'
 
 ApplicationWindow {
     // ############ application constants ############
-    readonly property string versionNumber: '20.0'
+    readonly property string versionNumber: '20.5'
     readonly property string emptyField: '---'
 
     // ############# application pragmas #############
@@ -59,6 +61,7 @@ ApplicationWindow {
 
     // ############ Javascript Handlers ###############
     readonly property var __USER_HANDLER: UserHandler
+    readonly property var __FIREBASE_HANDLER: FirebaseHandler
 
     // ################## Objects ####################
     readonly property var userObj: UserObj
@@ -74,7 +77,8 @@ ApplicationWindow {
     readonly property var cpp_firebaseInit: firebase.initializer           // ( bool , string )
     readonly property var cpp_signUp: firebase.signUp                      // ( string , sring )
     readonly property var cpp_signIn: firebase.signIn                      // ( string , sring )
-    readonly property var cpp_firebaseLog: firebase.setDebug      // ( bool,string )
+    readonly property var cpp_firebaseLog: firebase.setDebug               // ( bool,string )
+    readonly property var cpp_firebaseAPI: firebase.firebaseAPI               // ( bool,string )
 
 
     // ################ C variables ##################
@@ -101,6 +105,12 @@ ApplicationWindow {
     property var qmlVar_isAuthenticated
     onQmlVar_isAuthenticatedChanged: {
         console.log('LOGGED => qmlVar_isAuthenticated:'+qmlVar_isAuthenticated)
+    }
+
+    property var qmlVar_firebaseData
+    onQmlVar_firebaseDataChanged: {
+        alert.show('Database updated')
+        myLog('\nonQmlVar_firebaseDataChanged{\n'+qmlVar_firebaseData+"\n}")
     }
 
     // ################ C constants ##################
@@ -168,6 +178,8 @@ ApplicationWindow {
         cpp_setPath(storagePath)
         cpp_setGoogleKey()
         cpp_setRapidApiKey()
+
+        __USER_HANDLER.createUserTable()
 
         myLog('\nmain.qml_onCompleted(){\n\tinicial variables =>{\n\t\tstoragePath: '+storagePath+'\n\t\tgoogle key: '+cvar_googleKey()+'\n\t\t rapidApi Key: '+cvar_rapidApiKey()+'\n\t\tdebug status: '+cvar_debugStatus()+'}')
     }
